@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class BaseController {
 
-
     @RequestMapping(method = RequestMethod.GET, path = "/api/welcome")
     public String welcome(){
         return "Welcome";

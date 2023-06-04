@@ -3,6 +3,7 @@ package com.hzyazilimci.webservices.restfulwebservices.controller;
 import com.hzyazilimci.webservices.restfulwebservices.entities.sourceEntities.User;
 import com.hzyazilimci.webservices.restfulwebservices.repository.UserDaoService;
 import com.hzyazilimci.webservices.restfulwebservices.utils.exceptions.UserNotFoundException;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,7 +34,7 @@ public class UsersController {
     }
 
     @PostMapping
-    public ResponseEntity<User> save(@RequestBody User user){
+    public ResponseEntity<User> save(@Valid @RequestBody User user){
         User savedUser = this.userDaoService.save(user);
 
         URI location = ServletUriComponentsBuilder
