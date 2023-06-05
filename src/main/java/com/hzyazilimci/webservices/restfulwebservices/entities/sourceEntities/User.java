@@ -24,12 +24,8 @@ public class User {
     // @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     //@Column
-    @Size(min = 2, max = 60, message = "2-60 arasinda bir karakter dizisi giriniz.")
-    @NotEmpty(message = "Name alani bos veya null olamaz!")
     private String name;
     //@Column
-    @NotNull(message = "Bos birakilamaz.")
-    @Past(message = "İleri tarih ile istek atilamaz.")
     private LocalDate birthDate;
 
     //kullanici silebilmek

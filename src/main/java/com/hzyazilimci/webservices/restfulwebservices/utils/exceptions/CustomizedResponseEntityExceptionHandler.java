@@ -52,16 +52,18 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
             MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
 
         Map<String, String> validationErrorMap = new HashMap<>();
-        StringBuilder message = new StringBuilder();
 
         for (FieldError fieldError : ex.getBindingResult().getFieldErrors()){
             validationErrorMap.put(fieldError.getField(), fieldError.getDefaultMessage());
         }
 
-        for (int i=0; i<validationErrorMap.size(); i++){
-            message.append(String.format(validationErrorMap.get(i),"\n"));
-        }
+        ErrorDetails errorDetails = ErrorDetails
+                .builder()
+                .timestamp(LocalDateTime.now())
+                .message(validationErrorMap)
+                .details(request.getDescription(false))
+                .build();
 
-        return new ResponseEntity<>(validationErrorMap, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
     }
 }

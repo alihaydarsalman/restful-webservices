@@ -1,10 +1,12 @@
 package com.hzyazilimci.webservices.restfulwebservices.repository;
 
+import com.hzyazilimci.webservices.restfulwebservices.entities.converter.UserConverter;
+import com.hzyazilimci.webservices.restfulwebservices.entities.dtos.create.CreateUserRequest;
 import com.hzyazilimci.webservices.restfulwebservices.entities.sourceEntities.User;
-import com.hzyazilimci.webservices.restfulwebservices.enums.EnmExceptionMessages;
 import com.hzyazilimci.webservices.restfulwebservices.utils.exceptions.UserNotFoundException;
+import com.hzyazilimci.webservices.restfulwebservices.utils.messages.ExceptionMessages;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -14,8 +16,12 @@ import java.util.function.Predicate;
 /**
  * @author hzyazilimci
  */
+
+@RequiredArgsConstructor
 @Component
 public class UserDaoServiceImpl implements UserDaoService{
+
+    private final UserConverter converter;
 
     private static List<User> users = new ArrayList<>();
 
@@ -43,14 +49,15 @@ public class UserDaoServiceImpl implements UserDaoService{
     }
 
     @Override
-    public User save(User user) {
+    public User save(CreateUserRequest request) {
         User buildedUser = User.builder()
                 .id(++userId)
-                .name(user.getName())
-                .birthDate(user.getBirthDate())
+                .name(request.getName().trim())
+                .birthDate(request.getBirthDate())
                 .build();
 
         users.add(buildedUser);
+
         return buildedUser;
     }
 
@@ -72,7 +79,7 @@ public class UserDaoServiceImpl implements UserDaoService{
         }
 
         if (!existsFlag){
-            throw new UserNotFoundException(String.format(EnmExceptionMessages.USER_NOT_FOUND.getMessage(),id));
+            throw new UserNotFoundException(ExceptionMessages.UserExceptionMessages.USER_NOT_FOUND_EXCEPTION);
         }
     }
 }

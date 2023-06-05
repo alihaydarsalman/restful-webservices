@@ -1,8 +1,10 @@
 package com.hzyazilimci.webservices.restfulwebservices.controller;
 
+import com.hzyazilimci.webservices.restfulwebservices.entities.converter.UserConverter;
+import com.hzyazilimci.webservices.restfulwebservices.entities.dtos.create.CreateUserRequest;
+import com.hzyazilimci.webservices.restfulwebservices.entities.dtos.get.GetUserDto;
 import com.hzyazilimci.webservices.restfulwebservices.entities.sourceEntities.User;
 import com.hzyazilimci.webservices.restfulwebservices.repository.UserDaoService;
-import com.hzyazilimci.webservices.restfulwebservices.utils.exceptions.UserNotFoundException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -22,20 +24,22 @@ import java.util.List;
 public class UsersController {
 
     private final UserDaoService userDaoService;
+    private final UserConverter converter;
 
     @GetMapping("/getAll")
-    public List<User> findAll(){
-        return this.userDaoService.findAll();
+    public List<GetUserDto> findAll(){
+        return this.converter.convertUserToDto(this.userDaoService.findAll());
     }
 
     @GetMapping("{id}")
-    public User findById(@PathVariable Integer id){
-        return this.userDaoService.findById(id);
+    public GetUserDto findById(@PathVariable Integer id){
+        return this.converter.convertUserToDto(this.userDaoService.findById(id));
     }
 
     @PostMapping
-    public ResponseEntity<User> save(@Valid @RequestBody User user){
-        User savedUser = this.userDaoService.save(user);
+    public ResponseEntity<User> save(@Valid @RequestBody CreateUserRequest request){
+
+        User savedUser = this.userDaoService.save(request);
 
         URI location = ServletUriComponentsBuilder
                           .fromCurrentRequest() //bu metotta kullanilan path
