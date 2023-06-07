@@ -5,8 +5,12 @@ import com.hzyazilimci.webservices.restfulwebservices.entities.dtos.create.Creat
 import com.hzyazilimci.webservices.restfulwebservices.entities.dtos.get.GetUserDto;
 import com.hzyazilimci.webservices.restfulwebservices.entities.sourceEntities.User;
 import com.hzyazilimci.webservices.restfulwebservices.repository.UserDaoService;
+import com.hzyazilimci.webservices.restfulwebservices.utils.hateoas.CustomEntityModel;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -32,8 +36,32 @@ public class UsersController {
     }
 
     @GetMapping("{id}")
-    public GetUserDto findById(@PathVariable Integer id){
-        return this.converter.convertUserToDto(this.userDaoService.findById(id));
+    public EntityModel<GetUserDto> findById(@PathVariable Integer id){
+
+        EntityModel<GetUserDto> entityModel = new CustomEntityModel<>(this.converter.convertUserToDto(this.userDaoService.findById(id)));
+
+        WebMvcLinkBuilder linkToFindAll = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(this.getClass()).findAll());
+        WebMvcLinkBuilder linkToFindById = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(this.getClass()).findById(id));
+
+        entityModel.add(linkToFindAll.withRel("retrieve_all_users"));
+        entityModel.add(linkToFindById.withRel("findById"));
+
+        return entityModel;
+
+        /**
+         * CustomEntityModel sinifini yazmadan Hateos kutuphanesindeki EntityModel' i kullanarak da asagidaki sekilde calistirilabilir:
+         *
+         *         EntityModel<GetUserDto> entityModel = EntityModel.of(this.converter.convertUserToDto(this.userDaoService.findById(id)));
+         *
+         *         WebMvcLinkBuilder linkToFindAll = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(this.getClass()).findAll());
+         *         WebMvcLinkBuilder linkToFindById = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(this.getClass()).findById(id));
+         *
+         *         entityModel.add(linkToFindAll.withRel("retrieve_all_users"));
+         *         entityModel.add(linkToFindById.withRel("findById"));
+         *
+         *         return entityModel;
+         *
+         * */
     }
 
     @PostMapping
