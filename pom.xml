@@ -56,6 +56,7 @@
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
             <version>2.0.0</version>
         </dependency>
+        <!-- Alttaki dependency XML turunde response donebilmek icin kullanilir. Kullanici Accept Header icinde gormek istedigi veri turunu girer(JSON/XML...)-->
         <dependency>
             <groupId>com.fasterxml.jackson.dataformat</groupId>
             <artifactId>jackson-dataformat-xml</artifactId>
