@@ -1,7 +1,7 @@
-package com.hzyazilimci.webservices.restfulwebservices.entities.converter;
+package com.hzyazilimci.webservices.restfulwebservices.users.entities.converter;
 
-import com.hzyazilimci.webservices.restfulwebservices.entities.dtos.get.GetUserDto;
-import com.hzyazilimci.webservices.restfulwebservices.entities.sourceEntities.User;
+import com.hzyazilimci.webservices.restfulwebservices.users.entities.sourceEntities.User;
+import com.hzyazilimci.webservices.restfulwebservices.users.entities.dtos.get.GetUserDto;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

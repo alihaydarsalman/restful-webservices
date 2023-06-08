@@ -1,4 +1,4 @@
-package com.hzyazilimci.webservices.restfulwebservices.entities.sourceEntities;
+package com.hzyazilimci.webservices.restfulwebservices.users.entities.sourceEntities;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;

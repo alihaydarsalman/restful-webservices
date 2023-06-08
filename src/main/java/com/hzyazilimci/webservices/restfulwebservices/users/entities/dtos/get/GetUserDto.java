@@ -1,4 +1,4 @@
-package com.hzyazilimci.webservices.restfulwebservices.entities.dtos.get;
+package com.hzyazilimci.webservices.restfulwebservices.users.entities.dtos.get;
 
 import lombok.*;
 

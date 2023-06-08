@@ -1,4 +1,4 @@
-package com.hzyazilimci.webservices.restfulwebservices.controller;
+package com.hzyazilimci.webservices.restfulwebservices.users.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;

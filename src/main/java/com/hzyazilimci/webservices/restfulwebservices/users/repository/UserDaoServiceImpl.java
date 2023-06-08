@@ -1,8 +1,8 @@
-package com.hzyazilimci.webservices.restfulwebservices.repository;
+package com.hzyazilimci.webservices.restfulwebservices.users.repository;
 
-import com.hzyazilimci.webservices.restfulwebservices.entities.converter.UserConverter;
-import com.hzyazilimci.webservices.restfulwebservices.entities.dtos.create.CreateUserRequest;
-import com.hzyazilimci.webservices.restfulwebservices.entities.sourceEntities.User;
+import com.hzyazilimci.webservices.restfulwebservices.users.entities.converter.UserConverter;
+import com.hzyazilimci.webservices.restfulwebservices.users.entities.sourceEntities.User;
+import com.hzyazilimci.webservices.restfulwebservices.users.entities.dtos.create.CreateUserRequest;
 import com.hzyazilimci.webservices.restfulwebservices.utils.exceptions.UserNotFoundException;
 import com.hzyazilimci.webservices.restfulwebservices.utils.messages.ExceptionMessages;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,7 @@ import java.util.function.Predicate;
 
 @RequiredArgsConstructor
 @Component
-public class UserDaoServiceImpl implements UserDaoService{
+public class UserDaoServiceImpl implements UserDaoService {
 
     private final UserConverter converter;
 

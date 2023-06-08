@@ -1,4 +1,4 @@
-package com.hzyazilimci.webservices.restfulwebservices.entities.dtos.create;
+package com.hzyazilimci.webservices.restfulwebservices.users.entities.dtos.create;
 
 import com.hzyazilimci.webservices.restfulwebservices.utils.messages.ExceptionMessages;
 import jakarta.validation.constraints.*;

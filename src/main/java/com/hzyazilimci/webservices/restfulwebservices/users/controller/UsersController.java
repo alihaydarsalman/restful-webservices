@@ -1,10 +1,10 @@
-package com.hzyazilimci.webservices.restfulwebservices.controller;
+package com.hzyazilimci.webservices.restfulwebservices.users.controller;
 
-import com.hzyazilimci.webservices.restfulwebservices.entities.converter.UserConverter;
-import com.hzyazilimci.webservices.restfulwebservices.entities.dtos.create.CreateUserRequest;
-import com.hzyazilimci.webservices.restfulwebservices.entities.dtos.get.GetUserDto;
-import com.hzyazilimci.webservices.restfulwebservices.entities.sourceEntities.User;
-import com.hzyazilimci.webservices.restfulwebservices.repository.UserDaoService;
+import com.hzyazilimci.webservices.restfulwebservices.users.repository.UserDaoService;
+import com.hzyazilimci.webservices.restfulwebservices.users.entities.converter.UserConverter;
+import com.hzyazilimci.webservices.restfulwebservices.users.entities.dtos.create.CreateUserRequest;
+import com.hzyazilimci.webservices.restfulwebservices.users.entities.sourceEntities.User;
+import com.hzyazilimci.webservices.restfulwebservices.users.entities.dtos.get.GetUserDto;
 import com.hzyazilimci.webservices.restfulwebservices.utils.hateoas.CustomEntityModel;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
