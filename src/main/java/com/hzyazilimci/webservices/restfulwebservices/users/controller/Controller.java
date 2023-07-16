@@ -1,7 +1,11 @@
 package com.hzyazilimci.webservices.restfulwebservices.users.controller;
 
+import com.hzyazilimci.webservices.restfulwebservices.post.entities.converter.PostConverter;
+import com.hzyazilimci.webservices.restfulwebservices.post.entities.dtos.create.CreatePostRequest;
+import com.hzyazilimci.webservices.restfulwebservices.post.entities.dtos.get.GetPostDto;
+import com.hzyazilimci.webservices.restfulwebservices.post.entities.sourceEntities.Post;
+import com.hzyazilimci.webservices.restfulwebservices.post.repository.PostRepository;
 import com.hzyazilimci.webservices.restfulwebservices.users.entities.repository.UserRepository;
-import com.hzyazilimci.webservices.restfulwebservices.users.repository.UserDaoService;
 import com.hzyazilimci.webservices.restfulwebservices.users.entities.converter.UserConverter;
 import com.hzyazilimci.webservices.restfulwebservices.users.entities.dtos.create.CreateUserRequest;
 import com.hzyazilimci.webservices.restfulwebservices.users.entities.sourceEntities.User;
@@ -18,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,23 +32,28 @@ import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/users")
-public class UsersController {
+@RequestMapping("/api")
+public class Controller {
 
     //private final UserDaoService userDaoService;
     private final UserRepository userRepository;
-    private final UserConverter converter;
+    private final UserConverter userConverter;
+    private final PostRepository postRepository;
+    private final PostConverter postConverter;
 
-    @GetMapping("/getAll")
+    @GetMapping("/users/getAll")
     public List<GetUserDto> findAll(){
-        return this.converter.convertUserToDto(this.userRepository.findAll());
+        return this.userConverter.convertUserToDto(this.userRepository.findAll());
     }
 
-    @GetMapping("{id}")
-    public EntityModel<GetUserDto> findById(@PathVariable Integer id){
+    @GetMapping("/users/{id}")
+    public EntityModel<GetUserDto> findById(@PathVariable Integer id) throws UserNotFoundException{
 
         Optional<User> userModel = this.userRepository.findById(id);
-        GetUserDto userResponse = converter.convertUserToDto(userModel.get());
+        if (userModel.isEmpty()){
+            throw new UserNotFoundException("Getirilmek istenen kullanici bulunamadi. ID: "+id);
+        }
+        GetUserDto userResponse = userConverter.convertUserToDto(userModel.get());
 
         EntityModel<GetUserDto> entityModel = new CustomEntityModel<>(userResponse);
 
@@ -71,7 +81,7 @@ public class UsersController {
          * */
     }
 
-    @PostMapping("/save")
+    @PostMapping("/users/save")
     public ResponseEntity<User> save(@Valid @RequestBody CreateUserRequest request){
 
         User user = User.builder()
@@ -90,12 +100,72 @@ public class UsersController {
         return ResponseEntity.created(location).build(); //http header' da location' in gonderilmesi.
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/users/delete/{id}")
     public void delete(@PathVariable Integer id) throws UserNotFoundException {
 
         if (userRepository.existsById(id)){
             this.userRepository.deleteById(id);
         }else
             throw new UserNotFoundException("Silinmek istenen kullanici bulunamadi.");
+    }
+
+    @GetMapping("/users/{id}/posts")
+    public List<GetPostDto> getPostsForUser(@PathVariable Integer id) throws UserNotFoundException {
+
+        Optional<User> userModel = this.userRepository.findById(id);
+        if (userModel.isEmpty()){
+            throw new UserNotFoundException("Getirilmek istenen kullanici bulunamadi. ID: "+id);
+        }
+
+        List<Post> posts = userModel.get().getPostList();
+        List<GetPostDto> responsePostDto = new ArrayList<>();
+
+        for (Post post: posts){
+            GetPostDto getPostDto = postConverter.convertPostToDto(post);
+            responsePostDto.add(getPostDto);
+        }
+
+        return responsePostDto;
+    }
+
+    @PostMapping("/users/{id}/posts")
+    public ResponseEntity<Object> save(@RequestBody CreatePostRequest createPostRequest){
+
+        Optional<User> user = userRepository.findById(createPostRequest.getUserId());
+        if (user.isEmpty()){
+            throw new UserNotFoundException("Kullanici bulunamadi.");
+        }
+
+        Post post = Post.builder()
+                .description(createPostRequest.getDescription())
+                .user(user.get())
+                .build();
+
+        Post savedPost = postRepository.save(post);
+
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{postId}")
+                .buildAndExpand(savedPost.getPostId())
+                .toUri();
+
+        return ResponseEntity.created(location).build();
+    }
+
+    @GetMapping("/users/{id}/posts/{postId}")
+    public GetPostDto getPostForUser(@PathVariable Integer id, @PathVariable Integer postId){
+
+        Optional<User> user = this.userRepository.findById(id);
+
+        List<Post> posts = user.get().getPostList();
+
+        Post postToReturn = new Post();
+
+        for (Post post: posts){
+            if (post.getPostId().equals(postId)){
+                postToReturn = post;
+            }
+        }
+
+        return postConverter.convertPostToDto(postToReturn);
     }
 }

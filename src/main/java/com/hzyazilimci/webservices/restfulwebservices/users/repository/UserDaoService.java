@@ -10,8 +10,8 @@ import java.util.List;
  */
 public interface UserDaoService {
 
-    List<User> findAll();
-    User findById(Integer id);
-    User save(CreateUserRequest request);
-    void delete(Integer id);
+    //List<User> findAll();
+    //User findById(Integer id);
+    //User save(CreateUserRequest request);
+    //void delete(Integer id);
 }

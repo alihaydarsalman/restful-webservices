@@ -26,7 +26,7 @@ public class UserDaoServiceImpl implements UserDaoService {
     private static List<User> users = new ArrayList<>();
 
     private static int userId = 0;
-
+/*
     static {
         users.add(new User(++userId,"Alihaydar", LocalDate.now().minusYears(24)));
         users.add(new User(++userId,"Antonio", LocalDate.now().minusYears(46)));
@@ -81,6 +81,6 @@ public class UserDaoServiceImpl implements UserDaoService {
         if (!existsFlag){
             throw new UserNotFoundException(ExceptionMessages.UserExceptionMessages.USER_NOT_FOUND_EXCEPTION);
         }
-    }
+    }*/
 }
 
