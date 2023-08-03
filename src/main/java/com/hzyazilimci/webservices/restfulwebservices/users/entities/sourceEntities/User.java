@@ -1,6 +1,5 @@
 package com.hzyazilimci.webservices.restfulwebservices.users.entities.sourceEntities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.hzyazilimci.webservices.restfulwebservices.post.entities.sourceEntities.Post;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
